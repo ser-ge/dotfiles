@@ -16,13 +16,12 @@ set undofile
 set incsearch
 set backspace=indent,eol,start
 :imap jj <Esc>
-:tmap <silent> ,, <Esc> :FloatermToggle <CR>
-nnoremap <silent> <Leader>pp :FloatermNew --height=0.8 --width=0.8 --wintype=floating --name=ipy --autoclose=2 poetry run ptipython <CR>
-noremap <Leader>T :FloatermNew --height=0.4 --width=0.98 --wintype=floating --position=bottom --autoclose=2 <CR>
-noremap <Leader>t :FloatermToggle
-
+set path+=**
+" set wildmenu
+filetype plugin on
 :let maplocalleader = "\\"
 :let g:latex_to_unicode_keymap = 1
+
 :augroup numbertoggle
 :  autocmd!
 :  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
@@ -88,21 +87,27 @@ Plug 'sirver/ultisnips'
 Plug 'vim-syntastic/syntastic'
 Plug 'hanschen/vim-ipython-cell', { 'for': 'python'  }
 Plug 'jpalardy/vim-slime'
-set statusline=
-set statusline+=%#PmenuSel#
-" set statusline+=%{StatuslineGit()}
-set statusline+=%#CursorLineNr#
-
-set statusline=
-set statusline+=%#PmenuSel#
-" set statusline+=%{StatuslineGit()}
-set statusline+=%#CursorLineNr#
-
+Plug 'tpope/vim-surround'
+Plug 'guns/vim-sexp',    {'for': 'clojure'}
+Plug 'liquidz/vim-iced'
 call plug#end()
+set statusline=
+set statusline+=%#PmenuSel#
+" set statusline+=%{StatuslineGit()}
+set statusline+=%#CursorLineNr#
+
+set statusline=
+set statusline+=%#PmenuSel#
+" set statusline+=%{StatuslineGit()}
+set statusline+=%#CursorLineNr#
+
 " set termguicolors
 colorscheme gruvbox
 let g:gruvbox_contrast_dark='soft'
 set background=dark
+
+
+
 if executable('rg')
     let g:rg_derive_root='true'
 endif
@@ -219,12 +224,24 @@ filetype plugin on
 let g:vimwiki_global_ext = 0
 
 let g:vimwiki_list = [{
-            \'path': '~/Dropbox/wiki/notes/',
+            \'path': '~/drop/Dropbox/wiki/notes/',
             \'syntax': 'markdown',
             \'ext':'.md',
-	\ 'path_html': '~/Dropbox/wiki/html/',
+	\ 'path_html': '~/drop/Dropbox/wiki/html/',
     \ 'custom_wiki2html':'~/Dropbox/wiki/scripts/convert.py',}]
 
+" let g:vimwiki_list = [{
+"   \ 'auto_export': 1,
+"   \ 'automatic_nested_syntaxes':1,
+"   \ 'path_html': '$HOME/Dropbox/wiki/_site',
+"   \ 'path': '$HOME/DDropbox/wiki/content',
+"   \ 'template_path': '$HOME/Documents/vimwiki/templates/',
+"   \ 'syntax': 'markdown',
+"   \ 'ext':'.md',
+"   \ 'template_default':'markdown',
+"   \ 'custom_wiki2html': '$HOME/.dotfiles/wiki2html.sh',
+"   \ 'template_ext':'.html'
+" \}]
 " correct spelling in insert mode
 inoremap <C-g> <c-g>u<Esc>[s1z=`]a<c-g>
 
@@ -393,4 +410,46 @@ nnoremap <Leader>q :SlimeSend1 exit<CR>n
 
 " Float Term
 
+" function! floaterm#wrapper#ranger#(cmd) abort
+"   let s:ranger_tmpfile = tempname()
+"   let original_dir = getcwd()
+"   lcd %:p:h
+
+  " let cmdlist = split(a:cmd)
+  " let cmd = 'ranger --choosefiles="' . s:ranger_tmpfile . '"'
+  " if len(cmdlist) > 1
+  "   let cmd .= ' ' . join(cmdlist[1:], ' ')
+  " else
+  "   if expand('%:p') != ''
+  "     let cmd .= ' --selectfile="' . expand('%:p') . '"'
+  "   else
+  "   let cmd .= ' "' . getcwd() . '"'
+  "   endif
+  " endif
+
+  " exe "lcd " . original_dir
+  " return [cmd, {'on_exit': funcref('s:ranger_callback')}, v:false]
+" endfunction
+
+function! s:ranger_callback(...) abort
+  if filereadable(s:ranger_tmpfile)
+    let filenames = readfile(s:ranger_tmpfile)
+    if !empty(filenames)
+      if has('nvim')
+        call floaterm#window#hide(bufnr('%'))
+      endif
+      for filename in filenames
+        execute g:floaterm_open_command . ' ' . fnameescape(filename)
+      endfor
+    endif
+  endif
+endfunction
 " let g:floaterm_keymap_toggle  = '<C-j>'
+
+
+:tmap <silent> ,, <Esc> :FloatermToggle <CR>
+nnoremap <silent> <Leader>pp :FloatermNew --height=0.8 --width=0.8 --wintype=floating --name=ipy --autoclose=2 poetry run ptipython <CR>
+noremap <Leader>T :FloatermNew --height=0.4 --width=0.98 --wintype=floating --position=bottom --autoclose=2 <CR>
+noremap <Leader>t :FloatermToggle <CR>
+
+let g:iced_enable_default_key_mappings = v:true

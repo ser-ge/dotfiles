@@ -41,6 +41,12 @@ snippet part "d/dx" w
 \frac{\partial ${1:V}}{\partial ${2:x}} $0
 endsnippet
 
+snippet pybeg "python" iA
+\begin{minted}{python}
+    $1
+\end{minted}{python}
+$0
+endsnippet
 
 snippet fbeg "figure" iA
 \begin{figure}[H]
@@ -56,12 +62,33 @@ endsnippet
 # \\frac{`!p snip.rv = match.group(1)`}{$1}$0
 # endsnippet
 
-snippet beg "begin{} / end{}" bA
-\begin{$1}
-	$0
-\end{$1}
+# snippet beg "begin{} / end{}" iA
+# \begin{$1}
+# 	$0
+# \end{$1}
+# endsnippet
+
+snippet abeg "align" bA
+\begin{align*}
+	$1
+\end{align*}
 endsnippet
 
+snippet ibeg "items" bA
+\begin{itemize}
+	\item $1
+\end{itemize}
+$0
+endsnippet
+
+
+snippet brk "brackets" iA
+\left( $1 \right) $0
+endsnippet
+
+snippet < "expectation" iA
+\left< $1 \right>_{$2} $0
+endsnippet
 
 snippet mk "Math" wA
 $${1}$`!p
@@ -183,11 +210,11 @@ def add_row(snip):
 endglobal
 
 
-snippet tab "tabular / array environment" b
-\begin{${1:t}${1/(t)$|(a)$|(.*)/(?1:abular)(?2:rray)/}}{${2:c}}
-$0${2/(?<=.)(c|l|r)|./(?1: & )/g}
-\end{$1${1/(t)$|(a)$|(.*)/(?1:abular)(?2:rray)/}}
-endsnippet
+# snippet tab "tabular / array environment" iA
+# \begin{${1:t}${1/(t)$|(a)$|(.*)/(?1:abular)(?2:rray)/}}{${2:c}}
+# $0${2/(?<=.)(c|l|r)|./(?1: & )/g}
+# \end{$1${1/(t)$|(a)$|(.*)/(?1:abular)(?2:rray)/}}
+# endsnippet
 
 pre_expand "create_table(snip)"
 snippet "gentbl(\d+)x(\d+)" "Generate table of *width* by *height*" r
