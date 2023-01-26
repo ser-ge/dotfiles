@@ -1,7 +1,51 @@
 #!/usr/bin/bash
 sudo apt-get update
 
-sudo apt-get install make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev  libsqlite3-dev  wget  curl fzf  llvm  libncurses5-dev  libncursesw5-dev  xz-utils  tk-dev  libffi-dev  liblzma-dev  python-openssl  git  python3-pip  python3-dev  python3-dev  neovim  yarn  neovim  python3-neovim  postgresql  postgresql-contrib  libpq-dev  mosh  redis-server  libc6  libglapi-mesa  libxdamage1  libxfixes3  libxcb-glx0  libxcb-dri2-0  libxcb-dri3-0  libxcb-present0  libxcb-sync1  libxshmfence1  libxxf86vm1  -y -qq --no-install-recommends
+sudo
+apt-get
+install
+sudo apt-get install make -y -qq --no-install-recommends
+sudo apt-get install build-essential -y -qq --no-install-recommends
+sudo apt-get install libssl-dev -y -qq --no-install-recommends
+sudo apt-get install zlib1g-dev -y -qq --no-install-recommends
+sudo apt-get install libbz2-dev -y -qq --no-install-recommends
+sudo apt-get install libreadline-dev -y -qq --no-install-recommends
+sudo apt-get install libsqlite3-dev -y -qq --no-install-recommends
+sudo apt-get install wget -y -qq --no-install-recommends
+sudo apt-get install curl -y -qq --no-install-recommends
+sudo apt-get install fzf -y -qq --no-install-recommends
+sudo apt-get install llvm -y -qq --no-install-recommends
+sudo apt-get install libncurses5-dev -y -qq --no-install-recommends
+sudo apt-get install libncursesw5-dev -y -qq --no-install-recommends
+sudo apt-get install xz-utils -y -qq --no-install-recommends
+sudo apt-get install tk-dev -y -qq --no-install-recommends
+sudo apt-get install libffi-dev -y -qq --no-install-recommends
+sudo apt-get install liblzma-dev -y -qq --no-install-recommends
+sudo apt-get install python3-openssl -y -qq --no-install-recommends
+sudo apt-get install git -y -qq --no-install-recommends
+sudo apt-get install python3-pip -y -qq --no-install-recommends
+sudo apt-get install python3-dev -y -qq --no-install-recommends
+sudo apt-get install python3-dev -y -qq --no-install-recommends
+sudo apt-get install neovim -y -qq --no-install-recommends
+sudo apt-get install yarn -y -qq --no-install-recommends
+sudo apt-get install neovim -y -qq --no-install-recommends
+sudo apt-get install python3-neovim -y -qq --no-install-recommends
+sudo apt-get install postgresql -y -qq --no-install-recommends
+sudo apt-get install postgresql-contrib -y -qq --no-install-recommends
+sudo apt-get install libpq-dev -y -qq --no-install-recommends
+sudo apt-get install mosh -y -qq --no-install-recommends
+sudo apt-get install redis-server -y -qq --no-install-recommends
+sudo apt-get install libc6 -y -qq --no-install-recommends
+sudo apt-get install libglapi-mesa -y -qq --no-install-recommends
+sudo apt-get install libxdamage1 -y -qq --no-install-recommends
+sudo apt-get install libxfixes3 -y -qq --no-install-recommends
+sudo apt-get install libxcb-glx0 -y -qq --no-install-recommends
+sudo apt-get install libxcb-dri2-0 -y -qq --no-install-recommends
+sudo apt-get install libxcb-dri3-0 -y -qq --no-install-recommends
+sudo apt-get install libxcb-present0 -y -qq --no-install-recommends
+sudo apt-get install libxcb-sync1 -y -qq --no-install-recommends
+sudo apt-get install libxshmfence1 -y -qq --no-install-recommends
+sudo apt-get install libxxf86vm1 -y -qq --no-install-recommends
 
 if [ ! -d "${HOME}/.zsh" ]; then
   sudo apt install -y zsh
@@ -42,11 +86,11 @@ if [ ! -d /root/code/dotfiles ]; then
   cd "/root/code/dotfiles"
   git remote set-url origin git@github.com:serg-e/dotfiles.git
 
-  ln -sfn $(pwd)/.config "${HOME}/.config"
-  ln -sfn $(pwd)/.zshrc  "${HOME}/.zshrc"
-  ln -sfn $(pwd)/.gitconfig  "${HOME}/.gitconfig"
-  ln -sfn $(pwd)/.p10k.zsh "${HOME}/.p10k.zsh"
-  ln -sfn $(pwd)/.tmux.conf "${HOME}/.tmux.conf"
+  ln -sfn $(HOME)/dotfiles/.config "${HOME}/.config"
+  ln -sfn $(HOME)/dotfiles/.zshrc  "${HOME}/.zshrc"
+  ln -sfn $(HOME)/dotfiles/.gitconfig  "${HOME}/.gitconfig"
+  ln -sfn $(HOME)/dotfiles/.p10k.zsh "${HOME}/.p10k.zsh"
+  ln -sfn $(HOME)/dotfiles/.tmux.conf "${HOME}/.tmux.conf"
 
   #VimPlug
   sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
