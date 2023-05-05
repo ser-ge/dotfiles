@@ -36,6 +36,11 @@ snippet kkk "ipython cell" iA
 $1
 endsnippet
 
+snippet bb "breakpoint" iA
+breakpoint()
+$1
+endsnippet
+
 snippet mmm "ipython cell" iA
 # %% [markdown]
 """
@@ -133,6 +138,7 @@ def triple_quotes_handle_trailing(snip, quoting_style):
 
 def get_style(snip):
 	style = snip.opt("g:ultisnips_python_style", "normal")
+	style='numpy'
 
 	if    style == "doxygen": return DOXYGEN
 	elif  style == "sphinx": return SPHINX

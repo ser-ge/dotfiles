@@ -40,7 +40,7 @@ set shortmess+=c
  " XYG534-H9YKRAA5V2
 set colorcolumn=80
 highlight ColorColumn ctermbg=0 guibg=lightgrey
-
+" let g:python3_host_prog ='/Users/serge/.pyenv/shims/python'
 "Install Plug
 " if empty(glob('~/.vim/autoload/plug.vim'))
 "   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -53,6 +53,12 @@ highlight ColorColumn ctermbg=0 guibg=lightgrey
 " tnoremap <silent> <C-j> :FloatermToggle <CR>
 " let g:floaterm_keymap_toggle = '<C-\>'
 call plug#begin('~/.local/share/nvim/plugged')
+Plug 'vim-test/vim-test'
+Plug 'sagi-z/vimspectorpy', { 'do': { -> vimspectorpy#update() } }
+Plug 'puremourning/vimspector'
+Plug 'aduros/ai.vim'
+Plug 'othree/html5.vim'
+Plug 'evanleck/vim-svelte'
 Plug 'justinmk/vim-sneak'
 Plug 'voldikss/vim-floaterm'
 Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
@@ -76,12 +82,12 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 Plug 'tpope/vim-commentary'
 Plug 'jiangmiao/auto-pairs'
 Plug 'pangloss/vim-javascript'
+Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'mxw/vim-jsx'
 Plug 'airblade/vim-gitgutter'
 Plug 'jreybert/vimagit'
 Plug 'vimwiki/vimwiki'
-Plug 'junegunn/fzf'
 Plug 'https://github.com/alok/notational-fzf-vim'
 Plug 'sirver/ultisnips'
 Plug 'vim-syntastic/syntastic'
@@ -90,6 +96,7 @@ Plug 'jpalardy/vim-slime'
 Plug 'tpope/vim-surround'
 Plug 'guns/vim-sexp',    {'for': 'clojure'}
 Plug 'liquidz/vim-iced'
+Plug 'preservim/vimux'
 call plug#end()
 set statusline=
 set statusline+=%#PmenuSel#
@@ -149,6 +156,7 @@ nnoremap <leader>m :NERDTreeToggle <CR>
 nnoremap <leader>u :UndotreeShow<CR>
 nmap <leader>f <Plug>SlimeSendCell
 
+nnoremap <leader><leader> :Files<CR>
 
 function! s:check_back_space() abort
     let col = col('.') - 1
@@ -367,8 +375,8 @@ let g:ipython_cell_tag = "# %%"
 "------------------------------------------------------------------------------
 " Keyboard mappings. <Leader> is \ (backslash) by default
 
-" map <Leader>s to start IPython
-nnoremap <Leader>s :SlimeSend1 ipython --matplotlib<CR>
+" " map <Leader>s to start IPython
+" nnoremap <Leader>s :SlimeSend1 ipython --matplotlib<CR>
 
 " map <Leader>r to run script
 nnoremap <Leader>r :IPythonCellRun<CR>
@@ -403,7 +411,7 @@ nnoremap <Leader>p :IPythonCellPrevCommand<CR>
 nnoremap <Leader>Q :IPythonCellRestart<CR>
 
 " map <Leader>d to start debug mode
-nnoremap <Leader>d :SlimeSend1 %debug<CR>
+" nnoremap <Leader>d :SlimeSend1 %debug<CR>
 
 " map <Leader>q to exit debug mode or IPython
 nnoremap <Leader>q :SlimeSend1 exit<CR>n
@@ -447,9 +455,18 @@ endfunction
 " let g:floaterm_keymap_toggle  = '<C-j>'
 
 
-:tmap <silent> ,, <Esc> :FloatermToggle <CR>
-nnoremap <silent> <Leader>pp :FloatermNew --height=0.8 --width=0.8 --wintype=floating --name=ipy --autoclose=2 poetry run ptipython <CR>
-noremap <Leader>T :FloatermNew --height=0.4 --width=0.98 --wintype=floating --position=bottom --autoclose=2 <CR>
-noremap <Leader>t :FloatermToggle <CR>
+" :tmap <silent> ,, <Esc> :FloatermToggle <CR>
+" nnoremap <silent> <Leader>pp :FloatermNew --height=0.8 --width=0.8 --wintype=floating --name=ipy --autoclose=2 poetry run ptipython <CR>
+" noremap <Leader>T :FloatermNew --height=0.4 --width=0.98 --wintype=floating --position=bottom --autoclose=2 <CR>
+" noremap <Leader>t :FloatermToggle <CR>
 
 let g:iced_enable_default_key_mappings = v:true
+
+nmap <Leader>ss <Plug>VimspectorBalloonEval
+nmap <Leader>] <Plug>VimspectorRunToCursor
+" for normal mode - the word under the cursor
+nmap <Leader>t <Plug>VimspectorToggleBreakpoint
+nmap <C-n> <Plug>VimspectorStepOver
+" for visual mode, the visually selected text
+"
+
