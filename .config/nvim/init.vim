@@ -55,7 +55,7 @@ highlight ColorColumn ctermbg=0 guibg=lightgrey
 call plug#begin('~/.local/share/nvim/plugged')
 Plug 'vim-test/vim-test'
 Plug 'sagi-z/vimspectorpy', { 'do': { -> vimspectorpy#update() } }
-Plug 'puremourning/vimspector'
+" Plug 'puremourning/vimspector'
 Plug 'aduros/ai.vim'
 Plug 'othree/html5.vim'
 Plug 'evanleck/vim-svelte'
@@ -63,9 +63,9 @@ Plug 'justinmk/vim-sneak'
 Plug 'voldikss/vim-floaterm'
 Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
 Plug 'JuliaEditorSupport/julia-vim'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-jedi'
-Plug 'davidhalter/jedi-vim'
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'zchee/deoplete-jedi'
+" Plug 'davidhalter/jedi-vim'
 Plug 'psf/black'
 Plug 'morhetz/gruvbox'
 Plug 'jremmen/vim-ripgrep'
@@ -120,17 +120,19 @@ if executable('rg')
 endif
 
 let g:tex_flavor='latex'
-"Autocompletion
-let g:deoplete#enable_at_startup = 1
-autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif "close preview"
-"tab completion
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-" disable autocompletion, cause we use deoplete for completion
-let g:jedi#completions_enabled = 0
 
-" open the go-to function in split, not another buffer
-let g:jedi#use_splits_not_buffers = "right"
-let g:jedi#rename =""
+
+""Autocompletion
+"let g:deoplete#enable_at_startup = 1
+"autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif "close preview"
+""tab completion
+"inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+"" disable autocompletion, cause we use deoplete for completion
+"let g:jedi#completions_enabled = 0
+
+"" open the go-to function in split, not another buffer
+"let g:jedi#use_splits_not_buffers = "right"
+"let g:jedi#rename =""
 
 let mapleader = " "
 
