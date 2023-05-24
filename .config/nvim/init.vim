@@ -2,7 +2,7 @@ syntax on
 
 set hidden
 set noerrorbells
-set tabstop=4 softtabstop=4
+
 set shiftwidth=4
 set expandtab
 set smartindent
@@ -53,6 +53,23 @@ highlight ColorColumn ctermbg=0 guibg=lightgrey
 " tnoremap <silent> <C-j> :FloatermToggle <CR>
 " let g:floaterm_keymap_toggle = '<C-\>'
 call plug#begin('~/.local/share/nvim/plugged')
+Plug 'kiyoon/jupynium.nvim', { 'do': 'pip3 install --user .' }
+" Plug 'kiyoon/jupynium.nvim', { 'do': 'conda run --no-capture-output -n jupynium pip install .' }
+Plug 'hrsh7th/nvim-cmp'       " optional, for completion
+Plug 'rcarriga/nvim-notify'   " optional
+Plug 'stevearc/dressing.nvim' " optional, UI for :JupyniumKernelSelect
+Plug 'projekt0n/github-nvim-theme'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'rcarriga/cmp-dap'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'f3fora/cmp-spell'
+Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
+Plug 'williamboman/mason-lspconfig.nvim'
+Plug 'neovim/nvim-lspconfig'
+Plug 'williamboman/mason.nvim', { 'do': ':MasonUpdate' }
 Plug 'vim-test/vim-test'
 Plug 'sagi-z/vimspectorpy', { 'do': { -> vimspectorpy#update() } }
 " Plug 'puremourning/vimspector'
@@ -97,6 +114,18 @@ Plug 'tpope/vim-surround'
 Plug 'guns/vim-sexp',    {'for': 'clojure'}
 Plug 'liquidz/vim-iced'
 Plug 'preservim/vimux'
+Plug 'mfussenegger/nvim-dap'
+Plug 'mfussenegger/nvim-dap'
+Plug 'jay-babu/mason-nvim-dap.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'theHamsta/nvim-dap-virtual-text'
+Plug 'rcarriga/nvim-dap-ui'
+Plug 'folke/neodev.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'antoinemadec/FixCursorHold.nvim'
+Plug 'nvim-neotest/neotest'
+Plug 'nvim-neotest/neotest-python'
+Plug 'wuelnerdotexe/vim-astro'
 call plug#end()
 set statusline=
 set statusline+=%#PmenuSel#
@@ -109,12 +138,11 @@ set statusline+=%#PmenuSel#
 set statusline+=%#CursorLineNr#
 
 " set termguicolors
-colorscheme gruvbox
-let g:gruvbox_contrast_dark='soft'
-set background=dark
+" colorscheme gruvbox
+"let g:gruvbox_contrast_dark='soft'
+" set background=dark
 
-
-
+colorscheme github_dark
 if executable('rg')
     let g:rg_derive_root='true'
 endif
@@ -319,8 +347,8 @@ function! InstallPackages()
     call winrestview(winview)
 endfunction
 
-let g:UltiSnipsExpandTrigger = '<S-tab>'
-let g:UltiSnipsJumpForwardTrigger = '<S-tab>'
+" let g:UltiSnipsExpandTrigger = '<S-tab>'
+" let g:UltiSnipsJumpForwardTrigger = '<S-tab>'
 " let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 
 
@@ -471,4 +499,248 @@ nmap <Leader>t <Plug>VimspectorToggleBreakpoint
 nmap <C-n> <Plug>VimspectorStepOver
 " for visual mode, the visually selected text
 "
+augroup Mkdir
+  autocmd!
+  autocmd BufWritePre * call mkdir(expand("<afile>:p:h"), "p")
+augroup END
 
+" require("nvim-dap-virtual-text").setup()
+" https://smarttech101.com/nvim-lsp-configure-language-servers-shortcuts-highlights/
+    " vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>lD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+    "
+
+lua << EOF
+
+
+
+require("jupynium").setup({
+  --- For Conda environment named "jupynium",
+  python_host = { "poetry", "run", "python" }
+
+
+  default_notebook_URL = "localhost:8888",
+
+  -- Write jupyter command but without "notebook"
+  -- When you call :JupyniumStartAndAttachToServer and no notebook is open,
+  -- then Jupynium will open the server for you using this command. (only when notebook_URL is localhost)
+  jupyter_command = "jupyter",
+  --- For Conda, maybe use base environment
+  --- then you can `conda install -n base nb_conda_kernels` to switch environment in Jupyter Notebook
+  -- jupyter_command = { "conda", "run", "--no-capture-output", "-n", "base", "jupyter" },
+
+  -- Used when notebook is launched by using jupyter_command.
+  -- If nil or "", it will open at the git directory of the current buffer,
+  -- but still navigate to the directory of the current buffer. (e.g. localhost:8888/tree/path/to/buffer)
+  notebook_dir = nil,
+
+  -- Used to remember the last session (password etc.).
+  -- e.g. '~/.mozilla/firefox/profiles.ini'
+  -- or '~/snap/firefox/common/.mozilla/firefox/profiles.ini'
+  firefox_profiles_ini_path = nil,
+  -- nil means the profile with Default=1
+  -- or set to something like 'default-release'
+  firefox_profile_name = nil,
+
+  -- Open the Jupynium server if it is not already running
+  -- which means that it will open the Selenium browser when you open this file.
+  -- Related command :JupyniumStartAndAttachToServer
+  auto_start_server = {
+    enable = false,
+    file_pattern = { "*.ju.*" },
+  },
+
+  -- Attach current nvim to the Jupynium server
+  -- Without this step, you can't use :JupyniumStartSync
+  -- Related command :JupyniumAttachToServer
+  auto_attach_to_server = {
+    enable = true,
+    file_pattern = { "*.ju.*", "*.md" },
+  },
+
+  -- Automatically open an Untitled.ipynb file on Notebook
+  -- when you open a .ju.py file on nvim.
+  -- Related command :JupyniumStartSync
+  auto_start_sync = {
+    enable = false,
+    file_pattern = { "*.ju.*", "*.md" },
+  },
+
+  -- Automatically keep filename.ipynb copy of filename.ju.py
+  -- by downloading from the Jupyter Notebook server.
+  -- WARNING: this will overwrite the file without asking
+  -- Related command :JupyniumDownloadIpynb
+  auto_download_ipynb = true,
+
+  -- Automatically close tab that is in sync when you close buffer in vim.
+  auto_close_tab = true,
+
+  -- Always scroll to the current cell.
+  -- Related command :JupyniumScrollToCell
+  autoscroll = {
+    enable = true,
+    mode = "always", -- "always" or "invisible"
+    cell = {
+      top_margin_percent = 20,
+    },
+  },
+
+  scroll = {
+    page = { step = 0.5 },
+    cell = {
+      top_margin_percent = 20,
+    },
+  },
+
+  -- Files to be detected as a jupynium file.
+  -- Add highlighting, keybindings, commands (e.g. :JupyniumStartAndAttachToServer)
+  -- Modify this if you already have lots of files in Jupytext format, for example.
+  jupynium_file_pattern = { "*.ju.*" },
+
+  use_default_keybindings = true,
+  textobjects = {
+    use_default_keybindings = true,
+  },
+
+  syntax_highlight = {
+    enable = true,
+  },
+
+  -- Dim all cells except the current one
+  -- Related command :JupyniumShortsightedToggle
+  shortsighted = false,
+
+  -- Configure floating window options
+  -- Related command :JupyniumKernelHover
+  kernel_hover = {
+    floating_win_opts = {
+      max_width = 84,
+      border = "none",
+    },
+  },
+})
+
+-- You can link highlighting groups.
+-- This is the default (when colour scheme is unknown)
+-- Try with CursorColumn, Pmenu, Folded etc.
+vim.cmd [[
+hi! link JupyniumCodeCellSeparator CursorLine
+hi! link JupyniumMarkdownCellSeparator CursorLine
+hi! link JupyniumMarkdownCellContent CursorLine
+hi! link JupyniumMagicCommand Keyword
+]]
+
+-- Please share your favourite settings on other colour schemes, so I can add defaults.
+-- Currently, tokyonight is supported.
+require("neodev").setup({
+  library = { plugins = { "nvim-dap-ui" }, types = true },
+  ...
+})
+    require("mason").setup()
+    require("mason-lspconfig").setup()
+    require('lspconfig').pyright.setup{}
+    require("mason-nvim-dap").setup()
+    require("mason-nvim-dap").setup({
+        ensure_installed = { "python"}
+})
+
+    require("dapui").setup()
+
+
+
+     require("neotest").setup({
+  adapters = {
+    require("neotest-python"),
+    require("neotest-plenary")
+  }
+})
+
+
+
+ require("nvim-treesitter.configs").setup {
+    highlight = {
+      enable = true, -- false will disable the whole extension
+      disable = {}, -- list of language that will be disabled
+    },
+  }
+
+
+        local dap, dapui = require("dap"), require("dapui")
+    dap.listeners.after.event_initialized["dapui_config"] = function()
+      dapui.open()
+    end
+    dap.listeners.before.event_terminated["dapui_config"] = function()
+      dapui.close()
+    end
+    dap.listeners.before.event_exited["dapui_config"] = function()
+      dapui.close()
+    end
+
+    local dap = require('dap')
+    dap.configurations.python = {
+      {
+        type = 'python';
+        request = 'launch';
+        name = "Launch file";
+        program = "${file}";
+        pythonPath = function()
+          return 'python'
+        end;
+      },
+    }
+
+    dap.adapters.python = {
+        type = 'executable',
+        command = vim.fn.stdpath('data')..'/mason/packages/debugpy/venv/bin/python',
+        args = { '-m', 'debugpy.adapter' },
+    }
+
+    vim.keymap.set('n', '<F5>', function() require('dap').continue() end)
+    vim.keymap.set('n', '<F10>', function() require('dap').step_over() end)
+    vim.keymap.set('n', '<F11>', function() require('dap').step_into() end)
+    vim.keymap.set('n', '<F12>', function() require('dap').step_out() end)
+    vim.keymap.set('n', '<Leader>b', function() require('dap').toggle_breakpoint() end)
+    vim.keymap.set('n', '<Leader>B', function() require('dap').set_breakpoint() end)
+    vim.keymap.set('n', '<Leader>lp', function() require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end)
+    vim.keymap.set('n', '<Leader>dr', function() require('dap').repl.open() end)
+    vim.keymap.set('n', '<Leader>dl', function() require('dap').run_last() end)
+    vim.keymap.set({'n', 'v'}, '<Leader>dh', function()
+      require('dap.ui.widgets').hover()
+    end)
+    vim.keymap.set({'n', 'v'}, '<Leader>dp', function()
+      require('dap.ui.widgets').preview()
+    end)
+    vim.keymap.set('n', '<Leader>df', function()
+      local widgets = require('dap.ui.widgets')
+      widgets.centered_float(widgets.frames)
+    end)
+    vim.keymap.set('n', '<Leader>ds', function()
+      local widgets = require('dap.ui.widgets')
+      widgets.centered_float(widgets.scopes)
+    end)
+
+    require("nvim-dap-virtual-text").setup { all_frames = true, highlight_changed_variables = true  }
+
+    local function configure_exts()
+      require("nvim-dap-virtual-text").setup {
+        commented = true,
+      }
+
+      local dap, dapui = require "dap", require "dapui"
+      dapui.setup {} -- use default
+      dap.listeners.after.event_initialized["dapui_config"] = function()
+        dapui.open()
+      end
+      dap.listeners.before.event_terminated["dapui_config"] = function()
+        dapui.close()
+      end
+      dap.listeners.before.event_exited["dapui_config"] = function()
+        dapui.close()
+      end
+    end
+
+EOF
+let g:python_highlight_string_format = 1
+let g:python_highlight_builtin_objs  = 1
+
+source $HOME/.config/nvim/plug-config/lspconfig.lua
+source ~/.config/nvim/plug-config/auto-cmp.lua
