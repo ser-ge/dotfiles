@@ -3,6 +3,8 @@ sudo apt-get update
 
 sudo apt-get install make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev  libsqlite3-dev  wget  curl fzf  llvm  libncurses5-dev  libncursesw5-dev  xz-utils  tk-dev  libffi-dev  liblzma-dev  python-openssl  git  python3-pip  python3-dev  python3-dev  neovim  yarn  neovim  python3-neovim  postgresql  postgresql-contrib  libpq-dev  mosh  redis-server  libc6  libglapi-mesa  libxdamage1  libxfixes3  libxcb-glx0  libxcb-dri2-0  libxcb-dri3-0  libxcb-present0  libxcb-sync1  libxshmfence1  libxxf86vm1  stow -y -qq --no-install-recommends
 
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
 if [ ! -d "${HOME}/.config/fish" ]; then
   sudo apt install -y fish
   sudo apt-add-repository ppa:fish-shell/release-3
