@@ -11,13 +11,15 @@ fish_add_path "$HOME/.cargo/bin"
 
 export PYTHONBREAKPOINT='pudb.set_trace'
 export EDITOR="vi"
+export TMS_CONFIG_FILE="~/.config/tms/config.toml"
 
 if test -f "$HOME/.config/fish/secrets.fish"
     source "$HOME/.config/fish/secrets.fish"
 end
 
 alias s="sgpt -s"
-alias vf="vi $(fzf)"
+
+# alias vf="vi $(fzf)"
 
 set fish_key_bindings fish_user_key_bindings
 starship init fish | source
