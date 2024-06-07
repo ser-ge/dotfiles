@@ -1,6 +1,4 @@
-.config/code-server
-.config/systemd
-
+*secrets*
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/macos,linux
