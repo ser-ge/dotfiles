@@ -1,0 +1,48 @@
+file_path
+entry.content_hash
+entry.content
+path = Path(settings.PDF_DIR).expanduser().resolve()
+%cpaste -q
+import os
+from pathlib import Path
+from langchain import embeddings
+from langchain.embeddings.openai import OpenAIEmbeddings
+from tqdm import tqdm
+--
+from pathlib import Path
+path = Path(settings.PDF_DIR).expanduser().resolve()
+path
+pdf_documents = [os.path.join(directory, filename) for filename in os.listdir(directory)]
+pdf_documents
+%cpaste -q
+    langchain_documents = []
+    for document in tqdm(pdf_documents):
+        try:
+            loader = PyPDFLoader(document)
+            data = loader.load()
+            langchain_documents.extend(data)
+        except Exception as e:
+            print(e)
+            continue
+--
+%cpaste -q
+    langchain_documents = []
+    for document in tqdm(pdf_documents):
+        try:
+            loader = PyPDFLoader(document)
+            data = loader.load()
+            langchain_documents.extend(data)
+        except Exception as e:
+            print(e)
+            continue
+--
+doc = split_docs[0]
+dic
+doc
+len(doc.page_content)
+doc = split_docs[0]
+doc
+doc = split_docs[0]
+doc
+doc = split_docs[10]
+doc
