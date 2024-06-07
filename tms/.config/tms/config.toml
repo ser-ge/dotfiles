@@ -1,0 +1,5 @@
+search_submodules = false
+
+[[search_dirs]]
+path = "/Users/serge/projects"
+depth = 10
