@@ -5,7 +5,7 @@ sudo apt-get install make build-essential libssl-dev zlib1g-dev libbz2-dev libre
 
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
-if [ ! -d "${HOME}/.config/fish" ]; then
+if [ -x "$(command -v fish)" ]; then
   sudo apt install -y fish
   sudo apt-add-repository ppa:fish-shell/release-3
   sudo apt update
@@ -13,7 +13,7 @@ if [ ! -d "${HOME}/.config/fish" ]; then
 fi
 
 
-if [ ! -d "${HOME}/.fzf" ]; then
+if [ ! -x "$(command -v fzf)" ]; then
   echo " ==> Installing fzf"
   git clone https://github.com/junegunn/fzf "${HOME}/.fzf"
   pushd "${HOME}/.fzf"
@@ -26,28 +26,18 @@ echo "==> Setting shell to fish..."
 echo $(which fish) | sudo tee -a /etc/shells
 chsh -s $(which fish)
 
-echo "==> Creating dev directories"
-mkdir -p ~/setup/
 
 if [ ! -d ~/dotfiles ]; then
   echo "==> Setting up dotfiles"
   # the reason we dont't copy the files individually is, to easily push changes
   # if needed
-  cd "~/setup"
+  cd "~"
   git clone --recursive https://github.com/ser-ge/dotfiles.git
 
-  cd "~/setup/dotfiles"
+  cd "~/dotfiles"
+
   git remote set-url origin git@github.com:serg-e/dotfiles.git
 
-  ln -sfn $(pwd)/.config "${HOME}/.config"
-  ln -sfn $(pwd)/.zshrc  "${HOME}/.zshrc"
-  ln -sfn $(pwd)/.gitconfig  "${HOME}/.gitconfig"
-  ln -sfn $(pwd)/.p10k.zsh "${HOME}/.p10k.zsh"
-  ln -sfn $(pwd)/.tmux.conf "${HOME}/.tmux.conf"
-
-  #VimPlug
-  sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-           https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 fi
 
 if ! command -v rg &> /dev/null; then
@@ -55,9 +45,6 @@ if ! command -v rg &> /dev/null; then
     sudo dpkg -i ripgrep_11.0.2_amd64.deb
 fi
 
-if ! command -v mosh &> /dev/null; then
-    sudo apt install mosh -y
-fi
 
 #poetry
 if [ ! -d "${HOME}/.poetry" ]; then
@@ -69,11 +56,9 @@ if ! grep -qF 'export PATH=$HOME/.poetry/bin:$PATH' ${HOME}/.zshrc; then
 fi
 
 
-
 # pyenv
 
-
-if [ ! -d "${HOME}/.pyenv" ]; then
+if [ ! -x "${command -v pyenv)" ]; then
     echo "==> Setting up pyenv"
     git clone https://github.com/pyenv/pyenv.git ~/.pyenv
     git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
