@@ -1,7 +1,7 @@
 #!/bin/bash
-dotfile_packages=(nvim tmux tms)
+dotfile_packages=(nvim tmux tms fish ptpython pudb starship)
 # Directory where stow packages are located
-stow_dir="$HOME/dotfiles"
+stow_dir="$HOME/projects/dotfiles"
 
 # Stow target directory
 target_dir="$HOME"

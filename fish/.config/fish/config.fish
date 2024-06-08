@@ -9,8 +9,15 @@ fish_add_path "$HOME/.local/scripts/"
 fish_add_path "$HOME/.local/bin/"
 fish_add_path "$HOME/.cargo/bin"
 
+# python
+fish_add_path $PYENV_ROOT/bin
+set -Ux PYENV_ROOT $HOME/.pyenv
+pyenv init - | source
 export PYTHONBREAKPOINT='pudb.set_trace'
+
+
 export EDITOR="vi"
+
 export TMS_CONFIG_FILE="$HOME/.config/tms/config.toml"
 
 if test -f "$HOME/.config/fish/secrets.fish"
