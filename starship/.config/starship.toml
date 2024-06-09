@@ -30,6 +30,7 @@ style = 'fg:7'
 # Replace the "❯"
 [character]
 success_symbol = "[>](green)"
+vimcmd_symbol = "[>](yellow)"
 error_symbol = "[>](red)"
 
 [username]
