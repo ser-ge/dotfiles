@@ -1,5 +1,7 @@
 if status is-interactive
     # Commands to run in interactive sessions can go here
+    set -g fish_key_bindings fish_vi_key_bindings
+    set -g fish_cursor_insert "line"
 end
 
 fish_add_path "$HOME/bin"
@@ -15,6 +17,8 @@ set -Ux PYENV_ROOT $HOME/.pyenv
 pyenv init - | source
 export PYTHONBREAKPOINT='pudb.set_trace'
 
+# node
+set --universal nvm_default_version v22.2.0
 
 export EDITOR="vi"
 
@@ -24,7 +28,7 @@ if test -f "$HOME/.config/fish/secrets.fish"
     source "$HOME/.config/fish/secrets.fish"
 end
 
-alias s="sgpt\ -s"
+alias s="sgpt -s"
 
 set fish_key_bindings fish_user_key_bindings
 starship init fish | source
