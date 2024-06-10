@@ -1,7 +1,12 @@
 #!/bin/bash
+export LANGUAGE="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+export LANG="en_US.UTF-8"
+export LC_TYPE="en_US.UTF-8"
+
 dotfile_packages=(nvim tmux tms fish ptpython pudb starship)
 # Directory where stow packages are located
-stow_dir="$HOME/projects/dotfiles"
+stow_dir="$HOME/dotfiles"
 
 # Stow target directory
 target_dir="$HOME"
@@ -17,18 +22,12 @@ backup_suffix=".before_stow"
 backup_conflicting_files() {
   local package="$1"
   local conflicts
-  # conflicts=$(stow --no --verbose --target="$target_dir" --dir="$stow_dir" "$package" 2>&1 | grep 'existing target' | awk -F '=> ' '{print $2}' | sed 's/^\s*//;s/\s*$//')
-
-  conflicts=$(stow --no --verbose --target="$target_dir" --dir="$stow_dir" "$package" 2>&1 | \
-    grep 'existing target' | \
-    awk -F 'over existing target ' '{print $2}' | \
-    awk -F ' since neither a link nor a directory and --adopt not specified' '{print $1}')
-
-  echo $conflicts
 
   # Loop through the conflicts and backup each one
-  for file in $conflicts; do
-    local target_file="$target_dir/$file"
+  for file in $(find $package -type f); do
+    local reducedFilePath="${file#*/}"
+    local target_file="$HOME/$reducedFilePath"
+    echo $target_file
     local backup_file="$target_file$backup_suffix"
 
     echo "Backing up existing file: $target_file to $backup_file"

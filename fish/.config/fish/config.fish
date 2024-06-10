@@ -29,6 +29,7 @@ if test -f "$HOME/.config/fish/secrets.fish"
 end
 
 alias s="sgpt -s"
+alias weather='curl wttr.in/london'
 
 set fish_key_bindings fish_user_key_bindings
 starship init fish | source
