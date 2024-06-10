@@ -1,8 +1,13 @@
 if status is-interactive
     # Commands to run in interactive sessions can go here
-    set -g fish_key_bindings fish_vi_key_bindings
-    set -g fish_cursor_insert "line"
+
 end
+
+set -g fish_key_bindings fish_vi_key_bindings
+set -g fish_cursor_insert "line"
+
+bind yy fish_clipboard_copy
+bind p fish_clipboard_paste
 
 fish_add_path "$HOME/bin"
 fish_add_path "/usr/local/bin"
