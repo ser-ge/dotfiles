@@ -7,10 +7,14 @@ return {
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",
             "lukas-reineke/lsp-format.nvim",
-            { 'VonHeikemen/lsp-zero.nvim', branch = 'v3.x', },
+            { 'VonHeikemen/lsp-zero.nvim',  branch = 'v3.x', },
             'neovim/nvim-lspconfig',
             'hrsh7th/cmp-nvim-lsp',
             'hrsh7th/nvim-cmp',
+            { 'saadparwaiz1/cmp_luasnip' },
+            { "jay-babu/mason-null-ls.nvim" },
+
+
             'L3MON4D3/LuaSnip',
             "ray-x/lsp_signature.nvim",
         },

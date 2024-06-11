@@ -20,7 +20,6 @@ return require('packer').startup(function(use)
     use 'pwntester/octo.nvim'
 
     -- lazy.nvim
-    use "robitx/gp.nvim"
     use {
         "cbochs/grapple.nvim",
         requires = { "nvim-tree/nvim-web-devicons" }
@@ -94,29 +93,9 @@ return require('packer').startup(function(use)
 
     use 'vimwiki/vimwiki'
 
-    use 'projekt0n/github-nvim-theme'
-
     use 'ThePrimeagen/git-worktree.nvim'
 
-    use {
-        "jackMort/ChatGPT.nvim",
-        config = function()
-            require("chatgpt").setup()
-        end,
-        requires = {
-            "MunifTanjim/nui.nvim",
-            "nvim-lua/plenary.nvim",
-            "nvim-telescope/telescope.nvim"
-        }
-    }
-
     use "sindrets/diffview.nvim"
-
-    use 'tpope/vim-commentary'
-
-    use "jpalardy/vim-slime"
-
-    use "ribru17/bamboo.nvim"
 
 
 
@@ -155,31 +134,6 @@ return require('packer').startup(function(use)
         -- install jsregexp (optional!:).
         run = "make install_jsregexp"
     })
-
-    use {
-        'VonHeikemen/lsp-zero.nvim',
-        branch = 'v1.x',
-        requires = {
-            -- LSP Support
-            { 'neovim/nvim-lspconfig' },
-            { 'williamboman/mason.nvim' },
-            { 'williamboman/mason-lspconfig.nvim' },
-            { "nvimtools/none-ls.nvim" },
-            { "jay-babu/mason-null-ls.nvim" },
-
-            -- Autocompletion
-            { 'hrsh7th/nvim-cmp' },
-            { 'hrsh7th/cmp-buffer' },
-            { 'hrsh7th/cmp-path' },
-            { 'saadparwaiz1/cmp_luasnip' },
-            { 'hrsh7th/cmp-nvim-lsp' },
-            { 'hrsh7th/cmp-nvim-lua' },
-
-            -- Snippets
-            { 'L3MON4D3/LuaSnip' },
-            { 'rafamadriz/friendly-snippets' },
-        }
-    }
 
     use("zbirenbaum/copilot.lua")
 
