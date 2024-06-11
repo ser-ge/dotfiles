@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-rm ~/.config/nvim
-ln -s $(pwd) ~/.config/nvim
-

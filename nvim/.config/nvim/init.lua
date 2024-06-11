@@ -1,12 +1,19 @@
-local execute = vim.api.nvim_command
-local fn = vim.fn
+vim.g.mapleader = " "       -- Make sure to set `mapleader` before lazy so your mappings are correct
+vim.g.maplocalleader = "\\" -- Same for `maplocalleader`
 
-local install_path = fn.stdpath('data') .. '/site/pack/packer/opt/packer.nvim'
-
-if fn.empty(fn.glob(install_path)) > 0 then
-    execute('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
 end
-execute 'packadd packer.nvim'
+vim.opt.rtp:prepend(lazypath)
 
+require("lazy").setup("plugins")
 
 require("core")

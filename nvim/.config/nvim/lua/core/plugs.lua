@@ -118,15 +118,7 @@ return require('packer').startup(function(use)
 
     use "ribru17/bamboo.nvim"
 
-    use {
-        'nvim-telescope/telescope.nvim', tag = '0.1.4',
-        -- or                            , branch = '0.1.x',
-        requires = { { 'nvim-lua/plenary.nvim' } }
-    }
 
-    use { "ellisonleao/gruvbox.nvim" }
-    use { "sainnhe/gruvbox-material" }
-    use { 'luisiacc/gruvbox-baby' }
 
     use { "folke/todo-comments.nvim" }
 

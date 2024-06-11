@@ -54,7 +54,6 @@ vim.keymap.set("n", "<leader>h", ":wincmd h<CR>")
 vim.keymap.set("n", "<leader>l", "<C-w><C-l>")
 vim.keymap.set("n", "<leader>j", "<C-w><C-j>")
 vim.keymap.set("n", "<leader>k", "<C-w><C-k>")
-vim.keymap.set("n", "<leader>m", ":NeoTreeRevealToggle<CR>");
 vim.keymap.set("i", "kkk", "# %%<CR>");
 vim.keymap.set("i", "bbb", "breakpoint()<Esc>");
 
