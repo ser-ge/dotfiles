@@ -21,6 +21,7 @@ fish_add_path $PYENV_ROOT/bin
 set -Ux PYENV_ROOT $HOME/.pyenv
 pyenv init - | source
 export PYTHONBREAKPOINT='pudb.set_trace'
+export POETRY_CONFIG_DIR='~/.config/pypoetry'
 
 # node
 set --universal nvm_default_version v22.2.0
@@ -32,6 +33,10 @@ export TMS_CONFIG_FILE="$HOME/.config/tms/config.toml"
 if test -f "$HOME/.config/fish/secrets.fish"
     source "$HOME/.config/fish/secrets.fish"
 end
+
+abbr --add new_notebook "python -m jupyter_ascending.scripts.make_pair --base"
+
+abbr --add ss "source .venv/bin/activate.fish"
 
 alias s="sgpt -s"
 alias weather='curl wttr.in/london'
