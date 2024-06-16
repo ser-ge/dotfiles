@@ -36,22 +36,41 @@ return {
                 require('mason-lspconfig').setup({
                     -- Replace the language servers listed here
                     -- with the ones you want to install
-                    ensure_installed = { 'tsserver', 'rust_analyzer', 'ruff_lsp', 'ruff', 'pyright' },
+                    ensure_installed = { 'tsserver', 'rust_analyzer', 'ruff', 'pyright' },
                     handlers = {
                         function(server_name)
                             require('lspconfig')[server_name].setup({})
                         end,
 
+
+
                         pyright = function()
                             require('lspconfig').pyright.setup({
                                 settings = {
+                                    pyright = {
+                                        -- Using Ruff's import organizer
+                                        disableOrganizeImports = true,
+                                    },
                                     python = {
                                         pythonPath = vim.fn.exepath("python"),
-                                    },
+                                        analysis = {
+                                            -- Ignore all files for analysis to exclusively use Ruff for linting
+                                            ignore = { '*' },
+                                        },
+                                    }
                                 },
                             })
                         end,
 
+                        ruff = function()
+                            require('lspconfig').ruff.setup({
+                                settings = {
+                                    ruff = {
+                                        configurationPreference = "filesystemFirst"
+                                    },
+                                },
+                            })
+                        end,
                         basedpyright = function()
                             require('lspconfig').pyright.setup({
                                 settings = {
@@ -77,7 +96,7 @@ return {
 
 
 
-                require("lsp-format").setup {}
+                -- require("lsp-format").setup {}
 
 
                 lsp.set_preferences({
@@ -92,8 +111,16 @@ return {
 
                 lsp.on_attach(function(client, bufnr)
                     local opts = { buffer = bufnr, remap = false }
+                    if vim.api.nvim_buf_get_name(bufnr):match "^%a+://" then
+                        return
+                    end
 
-                    require("lsp-format").on_attach(client, bufnr)
+                    if client.name == 'ruff' then
+                        -- Disable hover in favor of Pyright
+                        client.server_capabilities.hoverProvider = false
+                    end
+
+                    -- require("lsp-format").on_attach(client, bufnr)
                     vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
                     vim.keymap.set("n", "gD", function() vim.lsp.buf.declaration() end, opts)
                     vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
@@ -123,6 +150,16 @@ return {
                         { name = 'nvim_lsp', priority = 8 },
                         { name = "buffer",   priority = 7 }, -- first for locality sorting?
                         { name = 'luasnip',  priority = 6 },
+                        {
+                            name = 'spell',
+                            option = {
+                                keep_all_entries = false,
+                                enable_in_context = function()
+                                    return true
+                                end,
+                                preselect_correct_word = true,
+                            },
+                        }
                     },
 
                     sorting = {
@@ -265,7 +302,8 @@ return {
                 -- note: on_attach deprecated
                 -- require 'lsp_signature'.on_attach(cfg) -- no need to specify bufnr if you don't use toggle_key
             end,
-    }
+    },
+
 
 
 
