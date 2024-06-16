@@ -61,7 +61,7 @@ cd "${HOME}/dotfiles"
 
 chmod +x install_dotfiles.sh
 
-echo "fish_add_path /opt/nvim-linux64/bin" >>"${HOME}/dotfiles/fish/.config/config.fish"
+echo "fish_add_path /opt/nvim-linux64/bin" >"${HOME}/dotfiles/fish/.config/config.fish"
 
 ./install_dotfiles.sh
 
