@@ -3,21 +3,20 @@
 apt-get update
 
 apt-get install -y --no-install-recommends \
-  git \
-  build-essential \
-  wget \
-  curl \
-  neovim \
-  stow \
-  ssh \
-  fish \
-  ca-certificates \
-  locales \
-  sudo \
-  gnupg \
-  htop \
-  screen \
-  unzip \
+    git \
+    build-essential \
+    wget \
+    curl \
+    stow \
+    ssh \
+    fish \
+    ca-certificates \
+    locales \
+    sudo \
+    gnupg \
+    htop \
+    screen \
+    unzip
 
 # # Set locale and timezone if not already set
 # : ${LANGUAGE:="en_US.UTF-8"}
@@ -29,6 +28,10 @@ apt-get install -y --no-install-recommends \
 export LC_CTYPE=en_US.UTF-8
 
 export LC_ALL=en_US.UTF-8
+
+curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
+sudo rm -rf /opt/nvim
+sudo tar -C /opt -xzf nvim-linux64.tar.gz
 
 # ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime \
 #   && echo "$TZ" > /etc/timezone \
@@ -52,12 +55,13 @@ popd
 
 cd ~
 
-git clone --recursive https://github.com/ser-ge/dotfiles.git  "${HOME}/dotfiles"
-
+git clone --recursive https://github.com/ser-ge/dotfiles.git "${HOME}/dotfiles"
 
 cd "${HOME}/dotfiles"
 
 chmod +x install_dotfiles.sh
+
+echo "fish_add_path /opt/nvim-linux64/bin" >>"${HOME}/dotfiles/fish/.config/config.fish"
 
 ./install_dotfiles.sh
 
