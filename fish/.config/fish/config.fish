@@ -22,6 +22,7 @@ set -Ux PYENV_ROOT $HOME/.pyenv
 pyenv init - | source
 export PYTHONBREAKPOINT='pudb.set_trace'
 export POETRY_CONFIG_DIR='~/.config/pypoetry'
+export PTPYTHON_CONFIG_HOME="$HOME/.config/ptpython"
 
 # node
 set --universal nvm_default_version v22.2.0

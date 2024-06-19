@@ -5,10 +5,6 @@ Copy this file to $XDG_CONFIG_HOME/ptpython/config.py
 On Linux, this is: ~/.config/ptpython/config.py
 On macOS, this is: ~/Library/Application Support/ptpython/config.py
 """
-from prompt_toolkit.filters import ViInsertMode
-from prompt_toolkit.key_binding.key_processor import KeyPress
-from prompt_toolkit.keys import Keys
-from prompt_toolkit.styles import Style
 
 from ptpython.layout import CompletionVisualisation
 
@@ -48,7 +44,7 @@ def configure(repl):
     repl.show_sidebar_help = True
 
     # Swap light/dark colors on or off
-    repl.swap_light_and_dark = False
+    repl.swap_light_and_dark = True
 
     # Highlight matching parentheses.
     repl.highlight_matching_parenthesis = True
@@ -111,7 +107,7 @@ def configure(repl):
     # color schemes. See:
     # https://pygments.org/docs/styles/
     # https://pygments.org/demo/
-    repl.use_code_colorscheme("default")
+    repl.use_code_colorscheme("gruvbox-light")
     # A colorscheme that looks good on dark backgrounds is 'native':
     # repl.use_code_colorscheme("native")
 
