@@ -3,7 +3,7 @@ return {
         "nvim-telescope/telescope.nvim",
         cmd = "Telescope",
         version = false, -- telescope did only one release, so use HEAD for now
-        dependencies = { 'nvim-lua/plenary.nvim' },
+        dependencies = { { 'nvim-lua/plenary.nvim' }, { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' } },
         keys = {
             {
                 "<leader>,",
@@ -37,60 +37,32 @@ return {
             { "<leader>so", "<cmd>Telescope vim_options<cr>",                                                                                      desc = "Options" },
             { "<leader>sR", "<cmd>Telescope resume<cr>",                                                                                           desc = "Resume" },
             { "<leader>sq", "<cmd>Telescope quickfix<cr>",                                                                                         desc = "Quickfix List" },
-
-            opts = function()
-                local actions = require("telescope.actions")
-
-                local open_with_trouble = function(...)
-                    return require("trouble.sources.telescope").open(...)
-                end
-                local find_files_no_ignore = function()
-                    local action_state = require("telescope.actions.state")
-                    local line = action_state.get_current_line()
-                    LazyVim.pick("find_files", { no_ignore = true, default_text = line })()
-                end
-                local find_files_with_hidden = function()
-                    local action_state = require("telescope.actions.state")
-                    local line = action_state.get_current_line()
-                    LazyVim.pick("find_files", { hidden = true, default_text = line })()
-                end
-
-                return {
-                    defaults = {
-                        prompt_prefix = " ",
-                        selection_caret = " ",
-                        -- open files in the first window that is an actual file.
-                        -- use the current window if no other window is available.
-                        get_selection_window = function()
-                            local wins = vim.api.nvim_list_wins()
-                            table.insert(wins, 1, vim.api.nvim_get_current_win())
-                            for _, win in ipairs(wins) do
-                                local buf = vim.api.nvim_win_get_buf(win)
-                                if vim.bo[buf].buftype == "" then
-                                    return win
-                                end
-                            end
-                            return 0
-                        end,
-                        mappings = {
-                            i = {
-                                ["<c-t>"] = open_with_trouble,
-                                ["<a-t>"] = open_with_trouble,
-                                ["<a-i>"] = find_files_no_ignore,
-                                ["<a-h>"] = find_files_with_hidden,
-                                ["<C-Down>"] = actions.cycle_history_next,
-                                ["<C-Up>"] = actions.cycle_history_prev,
-                                ["<C-f>"] = actions.preview_scrolling_down,
-                                ["<C-b>"] = actions.preview_scrolling_up,
-                            },
-                            n = {
-                                ["q"] = actions.close,
-                            },
-                        },
-                    },
-                }
-            end,
         },
+
+        opts = {
+            -- extensions = {
+            --     fzf = {
+            --         fuzzy = true,                   -- false will only do exact matching
+            --         override_generic_sorter = true, -- override the generic sorter
+            --         override_file_sorter = true,    -- override the file sorter
+            --         case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
+            --         -- the default case_mode is "smart_case"
+            --     }
+            -- },
+            defaults = {
+                preview = {
+                    treesitter = false,
+                },
+                prompt_prefix = "> ",
+                selection_caret = " ",
+            }
+        },
+
+        config = function(_, opts)
+            local ts = require('telescope')
+            ts.setup(opts)
+            ts.load_extension('fzf')
+        end
     },
 
     {

@@ -1,6 +1,6 @@
 require("core.set")
 require("core.remap")
--- require("core.plugs")
+require("core.redir")
 -- this file can be loaded by calling `lua require('plugins')` from your init.vim
 
 local augroup = vim.api.nvim_create_augroup

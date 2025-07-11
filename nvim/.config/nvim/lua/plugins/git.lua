@@ -16,6 +16,12 @@ return { {
         config = function()
             local Worktree = require("git-worktree")
 
+            require("telescope").load_extension("git_worktree")
+            -- require("telescope").load_extension("git_worktree")
+            -- vim.keymap.set("n", "<leader>gl", require("telescope").extensions.git_worktree.git_worktrees())
+            -- vim.keymap.set("n", "<leader>gn", require("telescope").extensions.git_worktree.git_worktrees())
+            --
+
             -- op = Operations.Switch, Operations.Create, Operations.Delete
             -- metadata = table of useful values (structure dependent on op)
             --      Switch
@@ -46,6 +52,13 @@ return { {
 
     {
         'pwntester/octo.nvim',
+
+        config = function(_, opts)
+            require('octo').setup(opts)
+            vim.keymap.set("n", "<leader>fi", "<cmd> Octo issue list<CR>")
+            vim.keymap.set("n", "<leader>fp", "<cmd> Octo pr list<CR>")
+        end,
+
         opts = {
             suppress_missing_scope = {
                 projects_v2 = true,
@@ -116,7 +129,7 @@ return { {
                 dark_blue = "#0366d6",
                 purple = "#6f42c1",
             },
-            mappings_disable_default = false, -- disable default mappings if true, but will still adapt user mappings
+            mappings_disable_default = true, -- disable default mappings if true, but will still adapt user mappings
             mappings = {
                 issue = {
                     close_issue = { lhs = "<space>ic", desc = "close issue" },
@@ -250,7 +263,7 @@ return { {
     {
         "lewis6991/gitsigns.nvim",
         opts = {
-            signs                             = {
+            signs                        = {
                 add          = { text = '┃' },
                 change       = { text = '┃' },
                 delete       = { text = '_' },
@@ -258,32 +271,29 @@ return { {
                 changedelete = { text = '~' },
                 untracked    = { text = '┆' },
             },
-            signcolumn                        = true,  -- Toggle with `:Gitsigns toggle_signs`
-            numhl                             = false, -- Toggle with `:Gitsigns toggle_numhl`
-            linehl                            = false, -- Toggle with `:Gitsigns toggle_linehl`
-            word_diff                         = false, -- Toggle with `:Gitsigns toggle_word_diff`
-            watch_gitdir                      = {
+            signcolumn                   = true,  -- Toggle with `:Gitsigns toggle_signs`
+            numhl                        = false, -- Toggle with `:Gitsigns toggle_numhl`
+            linehl                       = false, -- Toggle with `:Gitsigns toggle_linehl`
+            word_diff                    = false, -- Toggle with `:Gitsigns toggle_word_diff`
+            watch_gitdir                 = {
                 follow_files = true
             },
-            auto_attach                       = true,
-            attach_to_untracked               = false,
-            current_line_blame                = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
-            current_line_blame_opts           = {
+            auto_attach                  = true,
+            attach_to_untracked          = false,
+            current_line_blame           = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
+            current_line_blame_opts      = {
                 virt_text = true,
                 virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
                 delay = 1000,
                 ignore_whitespace = false,
                 virt_text_priority = 100,
             },
-            current_line_blame_formatter      = '<author>, <author_time:%Y-%m-%d> - <summary>',
-            current_line_blame_formatter_opts = {
-                relative_time = false,
-            },
-            sign_priority                     = 6,
-            update_debounce                   = 100,
-            status_formatter                  = nil,   -- Use default
-            max_file_length                   = 40000, -- Disable if file is longer than this (in lines)
-            preview_config                    = {
+            current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
+            sign_priority                = 6,
+            update_debounce              = 100,
+            status_formatter             = nil,   -- Use default
+            max_file_length              = 40000, -- Disable if file is longer than this (in lines)
+            preview_config               = {
                 -- Options passed to nvim_open_win
                 border = 'single',
                 style = 'minimal',
@@ -293,5 +303,20 @@ return { {
             },
         }
 
+    },
+    {
+        'akinsho/git-conflict.nvim',
+        opts = {
+            default_mappings = true,     -- disable buffer local mapping created by this plugin
+            default_commands = true,     -- disable commands created by this plugin
+            disable_diagnostics = false, -- This will disable the diagnostics in a buffer whilst it is conflicted
+            list_opener = 'copen',       -- command or function to open the conflicts list
+            highlights = {               -- They must have background color, otherwise the default color will be used
+                incoming = 'DiffAdd',
+                current = 'TSTodo',
+            }
+        },
+        version = "*",
+        config = true
     }
 }
