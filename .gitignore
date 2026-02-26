@@ -53,3 +53,5 @@ Temporary Items
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,linux
 .aider*
+.claude/
+CLAUDE.md
