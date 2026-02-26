@@ -24,7 +24,7 @@ vim.keymap.set("i", "jj", "<Esc>")
 
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
+vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format)
 
 -- vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")  -- conflicts with vim-tmux-navigator
 -- vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")  -- use <leader>n / <leader>b instead

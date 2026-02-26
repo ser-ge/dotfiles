@@ -6,7 +6,7 @@ local function set_lsp_map(bufnr)
     vim.keymap.set("n", "<leader>vs", function() vim.lsp.buf.signature_help() end, opts)
     vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
 
-    vim.keymap.set("n", "<leader>f", function() vim.lsp.buf.format() end, opts)
+    vim.keymap.set("n", "<leader>lf", function() vim.lsp.buf.format() end, opts)
 
     vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
     vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
@@ -156,7 +156,7 @@ return {
                     vim.keymap.set("n", "<leader>vs", function() vim.lsp.buf.signature_help() end, opts)
                     vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
 
-                    vim.keymap.set("n", "<leader>f", function() vim.lsp.buf.format() end, opts)
+                    vim.keymap.set("n", "<leader>lf", function() vim.lsp.buf.format() end, opts)
 
                     vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
                     vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
