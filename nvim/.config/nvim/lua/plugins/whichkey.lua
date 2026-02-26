@@ -38,5 +38,8 @@ return {
         },
         show_help = true,
         show_keys = true,
+        spec = {
+            { "<leader>a", group = "AI/Claude Code" },
+        },
     }
 }
