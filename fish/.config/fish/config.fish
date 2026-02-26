@@ -34,10 +34,6 @@ if test -f "$HOME/.config/fish/secrets.fish"
     source "$HOME/.config/fish/secrets.fish"
 end
 
-if test -f "$HOME/.config/fish/secrets.fish"
-    source "$HOME/.config/fish/secrets.fish"
-end
-
 if type -q "bat"
     alias cat="bat"
 end
@@ -51,7 +47,6 @@ abbr --add ss "source .venv/bin/activate.fish"
 alias s="sgpt -s"
 alias weather='curl wttr.in/london'
 
-set fish_key_bindings fish_user_key_bindings
 starship init fish | source
 direnv hook fish | source
 zoxide init fish | source
