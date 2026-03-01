@@ -33,8 +33,8 @@ vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
 
-vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
-vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
+vim.keymap.set("n", "<leader>S", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+vim.keymap.set("n", "<leader>fx", "<cmd>!chmod +x %<CR>", { silent = true })
 
 vim.keymap.set("n", "<leader>vpp", "<cmd>Oil ~/projects/dotfiles/nvim/.config/nvim/<CR>");
 
@@ -52,7 +52,6 @@ vim.keymap.set("i", "bbb", "breakpoint()<Esc>");
 
 vim.keymap.set("i", "<C-g>", "<c-g>u<Esc>[s1z=`]a<c-g>u");
 
-vim.keymap.set("n", "<leader>c", ":ChatGPTEditWithInstructions <CR>")
 
 
 vim.keymap.set("n", "<leader>n", ":cnext <CR>")

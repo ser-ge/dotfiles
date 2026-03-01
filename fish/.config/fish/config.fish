@@ -16,9 +16,6 @@ fish_add_path "$HOME/.local/bin/"
 fish_add_path "$home/.cargo/bin"
 
 # python
-fish_add_path $PYENV_ROOT/bin
-set -Ux PYENV_ROOT $HOME/.pyenv
-pyenv init - | source
 export PYTHONBREAKPOINT='pudb.set_trace'
 export POETRY_CONFIG_DIR="$HOME/.config/pypoetry"
 export PTPYTHON_CONFIG_HOME="$HOME/.config/ptpython"
