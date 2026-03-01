@@ -1,51 +1,51 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# install_dotfiles.sh — backup conflicting files then stow packages.
+# Usage: bash install_dotfiles.sh [package...]
+#   With no args: reads PACKAGES_MAX from packages.sh
+#   With args:    stows only the listed packages
+set -euo pipefail
 
-dotfile_packages=(nvim tmux tms fish ptpython pudb starship bash tmate)
-# Directory where stow packages are located
-stow_dir="$(pwd)"
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+TARGET_DIR="$HOME"
+BACKUP_SUFFIX=".before_stow"
+BACKUPS_LOG="$DOTFILES_DIR/.backups.log"
 
-# Stow target directory
-target_dir="$HOME"
+# Package list: args override packages.sh
+if [[ $# -gt 0 ]]; then
+    STOW_PACKAGES=("$@")
+else
+    # shellcheck source=packages.sh
+    source "$DOTFILES_DIR/packages.sh"
+    STOW_PACKAGES=("${PACKAGES_MAX[@]}")
+fi
 
-# Backup suffix for existing files
-backup_suffix=".before_stow"
-
-[ -e .backups.log ] && rm "$stow_dir/.backups.log"
-# Define the array of dotfile packages
-# Get a list of folders in the stow_dir that are tracked by git
-
-# Function to handle existing files and directories before stowing
 backup_conflicting_files() {
     local package="$1"
-    local conflicts
-
-    # Loop through the conflicts and backup each one
-    for file in $(find $package -type f); do
-        local reducedFilePath="${file#*/}"
-        local target_file="$HOME/$reducedFilePath"
-        echo $target_file
-        local backup_file="$target_file$backup_suffix"
-
-        echo "Backing up existing file: $target_file to $backup_file"
-        if [ -e "$backup_file" ]; then
-            echo "Backup file already exists: $backup_file"
-        else
-            # Backup the file or directory
-            mv -- "$target_file" "$backup_file"
-            echo "$backup_file" >>"$stow_dir/.backups.log"
+    while IFS= read -r -d '' file; do
+        local relative="${file#"$package"/}"
+        local target="$TARGET_DIR/$relative"
+        [[ ! -e "$target" ]] && continue
+        if [[ -L "$target" && "$(readlink "$target")" == "$DOTFILES_DIR"* ]]; then
+            continue
         fi
-    done
+        local backup="${target}${BACKUP_SUFFIX}"
+        if [[ -e "$backup" ]]; then
+            echo "Backup already exists: $backup, skipping"
+            continue
+        fi
+        echo "Backing up: $target -> $backup"
+        mv -- "$target" "$backup"
+        echo "$backup" >> "$BACKUPS_LOG"
+    done < <(find "$package" -type f -print0)
 }
 
-# Main loop to stow each package
-for package in "${dotfile_packages[@]}"; do
-    echo "Processing package: $package"
+[ -f "$BACKUPS_LOG" ] && rm "$BACKUPS_LOG"
 
-    # Backup any conflicting files before stowing
-    backup_conflicting_files "$package"
-
-    # Stow the package
-    stow --target="$target_dir" --dir="$stow_dir" "$package"
+for package in "${STOW_PACKAGES[@]}"; do
+    [[ -d "$DOTFILES_DIR/$package" ]] || { echo "Skipping missing package: $package"; continue; }
+    echo "Stowing: $package"
+    backup_conflicting_files "$DOTFILES_DIR/$package"
+    stow --target="$TARGET_DIR" --dir="$DOTFILES_DIR" "$package"
 done
 
-echo "All packages have been successfully stowed."
+echo "Done."

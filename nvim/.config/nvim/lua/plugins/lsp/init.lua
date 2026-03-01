@@ -59,7 +59,7 @@ return {
                 require('mason-lspconfig').setup({
                     -- Replace the language servers listed here
                     -- with the ones you want to install
-                    ensure_installed = { 'tsserver', 'ruff', 'pyright' },
+                    ensure_installed = { 'ts_ls', 'ruff', 'pyright' },
                     handlers = {
                         function(server_name)
                             if server_name ~= "rust_analyzer" then
@@ -119,8 +119,6 @@ return {
                 -- local cmp_select = {behavior = cmp.SelectBehavior.Select}
 
 
-                vim.api.nvim_set_keymap('i', '<S-Tab>', 'copilot#Accept("\\<CR>")',
-                    { silent = true, script = true, expr = true })
 
 
 

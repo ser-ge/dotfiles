@@ -1,37 +1,33 @@
-dirs:=$(shell fd -td -d1 .)
+STOW_PACKAGES := $(shell ls -d */ | sed 's|/||' | grep -Ev '^(scripts|bootstrap_scratch)$$')
 
-docker:
-	docker run -it --rm -v "$(pwd)":/scratch debian:latest bash
-up:
-	stow --stow ${dirs}
+.PHONY: up down refresh bootstrap docker docker-build docker-run docker-test help
 
-down:
-	stow --delete ${dirs}
+help:           ## Show this help
+	@grep -E '^[a-zA-Z_-]+:.*##' $(MAKEFILE_LIST) | awk -F'##' '{printf "  %-16s %s\n", $$1, $$2}'
 
-refresh:
-	stow --restow ${dirs}
+up:             ## Stow all packages into HOME
+	stow --stow $(STOW_PACKAGES)
 
-bootstrap: gh-cli ht-rust
-	mkdir -p ~/projects &&                         \
-	mkdir -p ~/bin &&                              \
-	sudo apt-get -y install                        \
-	curl 											\
-	wget 											\
-	bat                                            \
-	direnv                                         \
-	entr                                           \
-	eza                                            \
-	fish                                           \
-	fzf                                            \
-	gcc-c++                                        \
-	git                                            \
-	gh                                             \
-	libyaml-devel                                  \
-	make                                           \
-	neovim                                         \
-	openssl-devel                                  \
-	openssl                                        \
-	stow                                           \
-	tmux                                           \
+down:           ## Remove all stow symlinks from HOME
+	stow --delete $(STOW_PACKAGES)
 
+refresh:        ## Re-stow all packages (useful after adding files)
+	stow --restow $(STOW_PACKAGES)
 
+bootstrap:      ## Install tools and stow configs (runs bootstrap.sh)
+	bash bootstrap.sh
+
+# ── Docker ───────────────────────────────────────────────────────────────────
+
+docker:         ## Dev shell: repo mounted at /dotfiles, iterate on bootstrap.sh
+	docker run -it --rm -v "$(shell pwd)":/dotfiles -w /dotfiles debian:latest bash
+
+docker-build:   ## Build the baked image (layered for optimal caching)
+	docker build -t dotfiles .
+
+docker-run:     ## Run the baked image (interactive fish shell)
+	docker run -it --rm dotfiles
+
+docker-test:    ## Smoke-test bootstrap.sh in a clean Debian container
+	docker run --rm -v "$(shell pwd)":/dotfiles -w /dotfiles debian:latest \
+		bash /dotfiles/bootstrap.sh --skip-stow
