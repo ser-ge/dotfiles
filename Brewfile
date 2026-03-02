@@ -1,5 +1,6 @@
 # Brewfile — macOS packages
 # Add/remove a line, then: brew bundle
+# brew bundle --no-upgrade   skip upgrading already-installed packages
 # ─────────────────────────────────────────────────────────────────────────────
 
 # ── bootstrap essentials ──────────────────────────────────────────────────────

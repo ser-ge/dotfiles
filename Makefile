@@ -21,7 +21,7 @@ packages:       ## Re-sync packages on a running machine (no stow)
 	bash bootstrap.sh --skip-stow
 
 packages-cleanup: ## Remove Brewfile packages no longer listed (macOS only)
-	brew bundle cleanup --force --file=Brewfile
+	brew bundle cleanup --force
 
 # ── Docker ───────────────────────────────────────────────────────────────────
 
