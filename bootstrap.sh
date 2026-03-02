@@ -50,7 +50,7 @@ install_macos() {
         [[ -f /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
     fi
     info "Installing packages (Brewfile)..."
-    run brew bundle --file="$DOTFILES_DIR/Brewfile" --no-upgrade
+    run brew bundle --file="$DOTFILES_DIR/Brewfile" --no-upgrade --verbose
 }
 
 # ── Linux: apt/dnf + curl installs ────────────────────────────────────────────
