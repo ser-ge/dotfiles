@@ -25,13 +25,13 @@ make packages-cleanup # uninstall brew packages no longer in Brewfile (macOS)
 |------|-------|
 | macOS tool | `Brewfile` → `brew bundle` |
 | Linux tool (apt/dnf) | `packages.linux` → re-run bootstrap |
-| Linux tool (curl/cargo) | `bootstrap.sh` `install_linux()` |
+| Linux tool (curl/cargo) | `extras.sh` |
 | Config symlink | `packages.sh` |
 
 ### Linux curl / cargo installs
 
 These aren't in `packages.linux` because distro packages lag too far behind.
-To add/remove one, edit the `install_linux()` block in `bootstrap.sh`.
+To add/remove one, edit `extras.sh` — copy an existing block as a template.
 
 | Tool | Method | Why not apt |
 |------|--------|-------------|

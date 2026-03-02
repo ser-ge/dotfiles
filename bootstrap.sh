@@ -87,46 +87,9 @@ install_linux() {
             ;;
     esac
 
-    # ── curl installs: tools where distro packages lag too far behind ─────────
-    # Note: pipe commands are handled inline (run() helper doesn't work with pipes)
-
-    # Neovim
-    if ! has nvim; then
-        info "Installing neovim..."
-        local nvim_arch
-        nvim_arch=$(uname -m | sed 's/aarch64/arm64/')
-        $DRY_RUN \
-            && echo "    [dry-run] curl neovim tarball | tar -xz -C ~/.local" \
-            || curl -fsSL "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-${nvim_arch}.tar.gz" \
-                | tar -xz -C "$HOME/.local" --strip-components=1
-    fi
-
-    # Starship
-    if ! has starship; then
-        info "Installing starship..."
-        $DRY_RUN \
-            && echo "    [dry-run] curl https://starship.rs/install.sh | sh -s -- -y" \
-            || curl -fsSL https://starship.rs/install.sh | sh -s -- -y
-    fi
-
-    # Zoxide
-    if ! has zoxide; then
-        info "Installing zoxide..."
-        $DRY_RUN \
-            && echo "    [dry-run] curl https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh" \
-            || curl -fsSL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
-    fi
-
-    # Rust + tms (tmux-sessionizer)
-    if ! has cargo; then
-        info "Installing Rust (rustup)..."
-        $DRY_RUN \
-            && echo "    [dry-run] curl https://sh.rustup.rs | sh -s -- -y --no-modify-path" \
-            || curl -fsSL https://sh.rustup.rs | sh -s -- -y --no-modify-path
-        # shellcheck disable=SC1091
-        $DRY_RUN || source "$HOME/.cargo/env"
-    fi
-    has tms || { info "Installing tms..."; run cargo install tmux-sessionizer; }
+    # ── extras: curl/cargo installs (edit extras.sh to add/remove) ──────────────
+    # shellcheck source=extras.sh
+    source "$DOTFILES_DIR/extras.sh"
 }
 
 # ── fish plugins (fisher) ─────────────────────────────────────────────────────
