@@ -16,7 +16,7 @@ if [[ $# -gt 0 ]]; then
 else
     # shellcheck source=packages.sh
     source "$DOTFILES_DIR/packages.sh"
-    STOW_PACKAGES=("${PACKAGES_MAX[@]}")
+    STOW_PACKAGES=("${PACKAGES[@]}")
 fi
 
 backup_conflicting_files() {

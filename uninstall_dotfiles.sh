@@ -1,44 +1,34 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# uninstall_dotfiles.sh — unstow packages and restore any backed-up originals
 
-# Define the array of dotfile packages
-dotfile_packages=(nvim tmux tms fish ptpython pudb starship bash tmate)
-# Directory where stow packages are located
-stow_dir="$(pwd)"
-# Stow target directory
+set -euo pipefail
+
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=packages.sh
+source "$DOTFILES_DIR/packages.sh"
+
+stow_dir="$DOTFILES_DIR"
 target_dir="$HOME"
-
-# Backup suffix for existing files
 backup_suffix=".before_stow"
 
-# Function to restore the original files from backup
 restore_original_files() {
-    local package="$1"
-
-    if [ -e "$stow_dir/.backups.log" ]; then
-        while IFS= read -r backup_file; do
-            local original_file="${backup_file%$backup_suffix}"
-            echo "Restoring original file: $original_file from $backup_file"
-
-            if [ -e "$original_file" ]; then
-                echo "Original file already exists: $original_file.  skipping."
-            else
-                mv -- "$backup_file" "$original_file"
-            fi
-        done <"$stow_dir/.backups.log"
-    fi
-}
-# Function to unstow the packages
-unstow_packages() {
-    # Unstow each package
-    for package in "${dotfile_packages[@]}"; do
-        echo "Unstowing package: $package"
-        stow --delete --target="$target_dir" --dir="$stow_dir" "$package"
-    done
-
-    # Restore original files
-    for package in "${dotfile_packages[@]}"; do
-        restore_original_files "$package"
-    done
+    [[ -f "$stow_dir/.backups.log" ]] || return
+    while IFS= read -r backup_file; do
+        local original_file="${backup_file%$backup_suffix}"
+        if [[ -e "$original_file" ]]; then
+            echo "Original already exists: $original_file — skipping"
+        else
+            echo "Restoring: $original_file"
+            mv -- "$backup_file" "$original_file"
+        fi
+    done < "$stow_dir/.backups.log"
 }
 
-unstow_packages
+for package in "${PACKAGES[@]}"; do
+    [[ -d "$stow_dir/$package" ]] || { echo "Skipping missing package: $package"; continue; }
+    echo "Unstowing: $package"
+    stow --delete --target="$target_dir" --dir="$stow_dir" "$package"
+done
+
+restore_original_files
+echo "Done."

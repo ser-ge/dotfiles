@@ -1,0 +1,23 @@
+# packages.linux — apt / dnf packages
+# Add/remove a line, then re-run bootstrap.sh
+# Tools not listed here (neovim, starship, zoxide, tms) are installed
+# via curl in bootstrap.sh because distro packages lag too far behind.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── bootstrap essentials ──────────────────────────────────────────────────────
+git
+stow
+curl
+gpg
+
+# ── shell utilities ───────────────────────────────────────────────────────────
+direnv
+fzf
+ripgrep
+bat
+
+# ── shell ─────────────────────────────────────────────────────────────────────
+fish
+
+# ── terminal multiplexer ──────────────────────────────────────────────────────
+tmux

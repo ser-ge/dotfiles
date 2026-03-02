@@ -1,6 +1,6 @@
-STOW_PACKAGES := $(shell ls -d */ | sed 's|/||' | grep -Ev '^(scripts|bootstrap_scratch)$$')
+STOW_PACKAGES := $(shell ls -d */ | sed 's|/||' | grep -Ev '^(scripts|bootstrap_scratch)$$' | tr '\n' ' ')
 
-.PHONY: up down refresh bootstrap docker docker-build docker-run docker-test help
+.PHONY: up down refresh bootstrap packages packages-cleanup docker docker-build docker-run docker-test help
 
 help:           ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*##' $(MAKEFILE_LIST) | awk -F'##' '{printf "  %-16s %s\n", $$1, $$2}'
@@ -16,6 +16,12 @@ refresh:        ## Re-stow all packages (useful after adding files)
 
 bootstrap:      ## Install tools and stow configs (runs bootstrap.sh)
 	bash bootstrap.sh
+
+packages:       ## Re-sync packages on a running machine (no stow)
+	bash bootstrap.sh --skip-stow
+
+packages-cleanup: ## Remove Brewfile packages no longer listed (macOS only)
+	brew bundle cleanup --force --file=Brewfile
 
 # ── Docker ───────────────────────────────────────────────────────────────────
 

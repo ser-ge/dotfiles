@@ -41,7 +41,7 @@ RUN curl -fsSL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install
 # Busted on any dotfile change — but layers 1-5 above stay cached.
 COPY . /dotfiles
 WORKDIR /dotfiles
-# install_dotfiles.sh reads PACKAGES_MAX from packages.sh
+# install_dotfiles.sh reads PACKAGES from packages.sh
 RUN bash install_dotfiles.sh \
     && echo /usr/bin/fish >> /etc/shells \
     && chsh -s /usr/bin/fish
