@@ -1,20 +1,64 @@
 # Dotfiles
 
+Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
-## Neovim
+## Fresh install
 
-Notes:
+```sh
+curl -fsSL https://raw.githubusercontent.com/serg-e/dotfiles/master/install.sh | bash
+```
 
-all migrated except for:
+## Common commands
 
-- dap
-- neotest
-- treesitter-textobjects
-- dbui
-- fzf lua (do we need this?) ripgrep doing fine
-- advanced-git-search
-- vim-helm
+```sh
+make bootstrap        # install tools + stow configs
+make up               # stow all packages (symlink configs)
+make down             # remove all symlinks
+make refresh          # re-stow (after adding new files)
+make packages         # re-sync tools on a running machine (no stow)
+make packages-cleanup # uninstall brew packages no longer in Brewfile (macOS)
+```
 
+## Adding / removing packages
 
-![image](~/lady.jpg)
+| What | Where |
+|------|-------|
+| macOS tool | `Brewfile` → `brew bundle` |
+| Linux tool (apt/dnf) | `packages.linux` → re-run bootstrap |
+| Linux tool (curl/cargo) | `bootstrap.sh` `install_linux()` |
+| Config symlink | `packages.sh` |
 
+### Linux curl / cargo installs
+
+These aren't in `packages.linux` because distro packages lag too far behind.
+To add/remove one, edit the `install_linux()` block in `bootstrap.sh`.
+
+| Tool | Method | Why not apt |
+|------|--------|-------------|
+| neovim | GitHub tarball | apt version too old |
+| starship | curl installer | not in apt |
+| zoxide | curl installer | not in apt |
+| rustup | curl installer | canonical, no alternative |
+| tms | `cargo install` | requires rust |
+
+## Packages
+
+Stow packages: `fish` `git` `nvim` `bash` `starship` `tmux` `tms` `tmate` `alacritty` `ptpython` `pudb` `pypoetry`
+
+## Docker
+
+```sh
+make docker-build   # build dotfiles image
+make docker-run     # interactive fish shell in the image
+make docker-test    # smoke-test bootstrap.sh in a clean Debian container
+make docker         # dev shell with repo mounted (iterate on bootstrap.sh)
+```
+
+To use in another image:
+
+```dockerfile
+FROM dotfiles          # build on top of the dotfiles image
+
+# or curl install (no local image needed):
+RUN curl -fsSL https://raw.githubusercontent.com/serg-e/dotfiles/master/install.sh | bash
+```
