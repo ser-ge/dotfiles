@@ -6,7 +6,6 @@
 # ── bootstrap essentials ──────────────────────────────────────────────────────
 brew "git"
 brew "stow"
-brew "curl"
 
 # ── shell utilities (sourced unconditionally in config.fish) ──────────────────
 brew "direnv"
